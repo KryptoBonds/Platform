@@ -4,7 +4,7 @@
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 # call $bitcoin-cli for RPC
-_bitcoin_rpc() {
+_KBS_rpc() {
     # determine already specified args necessary for RPC
     local rpcargs=()
     for i in ${COMP_LINE}; do
@@ -14,23 +14,23 @@ _bitcoin_rpc() {
                 ;;
         esac
     done
-    $bitcoin_cli "${rpcargs[@]}" "$@"
+    $KBS_cli "${rpcargs[@]}" "$@"
 }
 
 # Add wallet accounts to COMPREPLY
-_bitcoin_accounts() {
+_KBS_accounts() {
     local accounts
-    accounts=$(_bitcoin_rpc listaccounts | awk -F '"' '{ print $2 }')
+    accounts=$(_KBS_rpc listaccounts | awk -F '"' '{ print $2 }')
     COMPREPLY=( "${COMPREPLY[@]}" $( compgen -W "$accounts" -- "$cur" ) )
 }
 
-_bitcoin_cli() {
+_KBS_cli() {
     local cur prev words=() cword
-    local bitcoin_cli
+    local KBS_cli
 
-    # save and use original argument to invoke bitcoin-cli for -help, help and RPC
-    # as bitcoin-cli might not be in $PATH
-    bitcoin_cli="$1"
+    # save and use original argument to invoke KBS-cli for -help, help and RPC
+    # as KBS-cli might not be in $PATH
+    KBS_cli="$1"
 
     COMPREPLY=()
     _get_comp_words_by_ref -n = cur prev words cword
